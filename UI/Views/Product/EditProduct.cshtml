@@ -1,0 +1,23 @@
+﻿@using EntityLayer.Concrete
+@model Product
+@{
+    ViewData["Title"] = "EditProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h4>Ürün Güncelleme</h4>
+<br />
+<form method="post">
+
+    <input type="text" class="form-control" asp-for="@Model.Name" required />
+    <br />
+    <input type="text" class="form-control" asp-for="@Model.Description" required />
+    <br />
+    <input type="text" class="form-control" asp-for="@Model.UnitsInPrice" required />
+    <br />
+    <input type="text" class="form-control" asp-for="@Model.UnitsInStock" required />
+    <br />
+    <button class="btn btn-success">Güncelle</button>
+
+</form>

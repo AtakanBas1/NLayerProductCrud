@@ -1,0 +1,48 @@
+﻿@using EntityLayer.Concrete
+@model BaseUser
+
+@{
+    ViewData["Title"] = "AddUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<section class="main-content-w3layouts-agileits">
+    <div class="container">
+        <h3 class="tittle">Kullanıcı Kayıt Sayfası</h3>
+        <div class="inner-sec">
+            <div class="login p-5 bg-light mx-auto mw-100">
+                @using (Html.BeginForm("AddUSer", "Login", FormMethod.Post))
+                {
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Adınız Soyadınız</label>
+                            @Html.TextBoxFor(x => x.NameSurname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x=>x.NameSurname)
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Kullanıcı Adınız</label>
+                            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.UserName)
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02">Mail Adresi</label>
+                            @Html.TextBoxFor(x => x.EMail, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.EMail)
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword1 mb-2">Şifre</label>
+                            @Html.TextBoxFor(x => x.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.Password)
+                        </div>
+
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary submit mb-4">Kayıt Ol</button>
+                }
+            </div>
+        </div>
+    </div>
+</section>

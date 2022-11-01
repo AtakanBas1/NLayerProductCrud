@@ -1,0 +1,101 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<EntityLayer.Concrete.Product>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div>
+    <input type="text" class="form-control" name="Name" id="name" placeholder="Ürün Adı giriniz" />
+    <br />
+    <input type="text" class="form-control" name="Description" id="description" placeholder="Ürün tanımlaması" required />
+    <br />
+    <input type="text" class="form-control" name="UnitsInPrice" id="unitsInPrice" placeholder="Ürün Fiyatı Giriniz" />
+    <br />
+    <input type="text" class="form-control" name="UnitsInStock" id="unitsInStock" placeholder="Ürün Stok Miktarını Giriniz" />
+    <br />
+</div>
+
+
+<br />
+<button type="button" id="btnadd" class="btn btn-info">Ürün Ekle</button>
+<button type="button" id="getlist" onclick="Getlist()" class="btn btn-primary">Ürün Listesi</button>
+
+<br />
+
+<div id="urunlist">
+
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Silmek İstediğinize Emin Misiniz?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="" id="delete" class="btn btn-danger">Sil</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    <script>
+
+        $("#btnadd").click(function () {
+            let product = {
+                Name: $("#name").val(),
+                Description: $("#description").val(),
+                UnitsInPrice: $("#unitsInPrice").val(),
+                UnitsInStock: $("#unitsInStock").val(),
+            };
+            $.ajax({
+                type: "post",
+                url: "/Product/AddProduct/",
+                data: product,
+                success: function (func) {
+                    let result = jQuery.parseJSON(func);
+
+                }
+            });
+            Getlist();
+        });
+        function Getlist() {
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Product/ProductList",
+                success: function (func) {
+
+                    let p = jQuery.parseJSON(func);
+                    let tablehtml = "<br/><h4>Ürünler Listesi</h3> <br/> <table class=table table-bordered> <tr><th>#</th><th>İsmi</th><th>Detay</th><th>Fiyat(TL)</th><th>Stok Miktarı</th><th>Sil</th><th>Güncelle</th></tr>";
+
+                    $.each(p, (index, value) => {
+                        tablehtml += `<tr><td>${value.ID}</td> <td>${value.Name}</td> <td>${value.Description}</td> <td>${value.UnitsInPrice}</td> <td>${value.UnitsInStock}</td><td><button type="button" onclick="sendValue(${value.ID})" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Sil</button>
+                          </td> <td><a href="/Product/EditProduct/${value.ID}" class="btn btn-warning">Güncelle</a></td></tr>`
+                    });
+                    tablehtml += "</table>";
+                    $("#urunlist").html(tablehtml);
+                }
+            });
+        }
+        function sendValue(value) {
+
+            document.getElementById("delete").href = "/Product/DeleteProduct/" + value;
+        }
+    </script>
+}
+
+
